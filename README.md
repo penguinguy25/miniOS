@@ -6,7 +6,7 @@ Enjoy miniOS!
 
 
 Early Supporters:
-	stierprogrammer --- Discord
+	stierprogrammer --- Discord  ||
 	gudetimo --- Discord
 
 Created by penguinguy25 on Replit and Discord
