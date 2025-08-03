@@ -4,8 +4,8 @@ To use miniOS, make sure you already have Python installed on your computer, nav
 
 IMPORTANT: The boot command is "on"!
 
-Version 0.0.2 is out, here's what's new:
--Added to-do list reminders (you can turn on reminders for a certain note, making it so that you get reminders for that note occasionally while using miniOS)
+Version 0.0.2 is out, here's what's new:\n
+-Added to-do list reminders (you can turn on reminders for a certain note, making it so that you get reminders for that note occasionally while using miniOS)\n
 -Changed the date format to H:M:S d/m/Y
 -Added time and fulltime functions to MiniCustom
 -Added the "msay" function to MiniCustom (works like echo)
