@@ -7,14 +7,277 @@ import os
 from functools import reduce
 import math
 import webbrowser
+from rich.console import Console
+from rich.panel import Panel
+from rich.columns import Columns
+from rich.align import Align
+import platform
+import psutil
+from screeninfo import get_monitors
+import subprocess
+import requests
+from dotenv import load_dotenv
+import sys
+import wikipedia
+
+console = Console()
+
+load_dotenv()
+USER_WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+
 
 # SHUTDOWN COMMAND
 def shutdown():
-    print(f"{Fore.MAGENTA}---miniOS 0.0.1 shut down---{Style.RESET_ALL}")
+    print(f"{Fore.MAGENTA}---miniOS 0.0.2 shut down---{Style.RESET_ALL}")
+    sys.exit()
 
 # NEW SCREEN FUNCTION
 def new_screen():
     os.system("cls" if os.name == "nt" else "clear")
+
+
+index = f"[#71F59D]Index[/#71F59D]"
+index_1 = f"""[#71F59D]  1  [/#71F59D]
+[#71F59D]  2 [/#71F59D]
+[#71F59D]  3 [/#71F59D]
+[#71F59D]  4 [/#71F59D]
+[#71F59D]  5 [/#71F59D]
+[#71F59D]  6 [/#71F59D]"""
+
+methods = f"[#C44B6A]      Methods       [/#C44B6A]"
+methods_1 = f"""[#C44B6A]Kilometers --> Miles[/#C44B6A]
+[#C44B6A]Miles --> Kilometers[/#C44B6A]
+[#C44B6A]Meters --> Feet[/#C44B6A]
+[#C44B6A]Feet --> Meters[/#C44B6A]
+[#C44B6A]Kg --> Pounds[/#C44B6A]
+[#C44B6A]Pounds --> Kg[/#C44B6A]"""
+
+index_frame = Panel.fit(Align(index, align="center"), border_style="#71F59D")
+index1_frame = Panel.fit(Align(index_1, align="center"), border_style="#71F59D")
+
+methods_frame = Panel.fit(Align(methods, align="center"), border_style="#C44B6A")
+methods1_frame = Panel.fit(Align(methods_1, align="center"), border_style="#C44B6A")
+
+row1 = Columns([index_frame, methods_frame], equal=True)
+row2 = Columns([index1_frame, methods1_frame], equal=True)
+
+
+
+def feetm():
+    console.print(f"[#C44B6A]Type the amount of feet you want to convert to meters . . .[/#C44B6A]")
+    while True:
+        feetm_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if feetm_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                feetm_amount_float = float(feetm_amount) * 0.3048
+                console.print(f"[#71F59D]{feetm_amount}[/#71F59D][#C44B6A] feet is [/#C44B6A][#7AE6F0]{feetm_amount_float:.3f} [/#7AE6F0][#C44B6A]meter(s)[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+
+
+def pkg():
+    console.print(f"[#C44B6A]Type the amount of pounds you want to convert to kilograms . . .[/#C44B6A]")
+    while True:
+        pkg_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if pkg_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                pkg_amount_float = float(pkg_amount) * 0.453592
+                console.print(f"[#71F59D]{pkg_amount}[/#71F59D][#C44B6A] pound(s) is [/#C44B6A][#7AE6F0]{pkg_amount_float:.3f} [/#7AE6F0][#C44B6A]kilogram(s)[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+
+def kgp():
+    console.print(f"[#C44B6A]Type the amount of kilograms you want to convert to pounds . . .[/#C44B6A]")
+    while True:
+        kgp_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if kgp_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                kgp_amount_float = float(kgp_amount) * 2.20462
+                console.print(f"[#71F59D]{kgp_amount}[/#71F59D][#C44B6A] kilogram(s) is [/#C44B6A][#7AE6F0]{kgp_amount_float:.3f} [/#7AE6F0][#C44B6A]pound(s)[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+
+def mfeet():
+    console.print(f"[#C44B6A]Type the amount of meters you want to convert to feet . . .[/#C44B6A]")
+    while True:
+        mfeet_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if mfeet_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                mfeet_amount_float = float(mfeet_amount) * 3.28084
+                console.print(f"[#71F59D]{mfeet_amount}[/#71F59D][#C44B6A] meter(s) is [/#C44B6A][#7AE6F0]{mfeet_amount_float:.3f} [/#7AE6F0][#C44B6A]feet[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+
+def mk():
+    console.print(f"[#C44B6A]Type the amount of miles you want to convert to kilometers . . .[/#C44B6A]")
+    while True:
+        mk_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if mk_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                mk_amount_float = float(mk_amount) * 1.60934
+                console.print(f"[#71F59D]{mk_amount}[/#71F59D][#C44B6A] mile(s) is [/#C44B6A][#7AE6F0]{mk_amount_float:.3f} [/#7AE6F0][#C44B6A]kilometer(s)[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+
+
+def km():
+    console.print(f"[#C44B6A]Type the amount of kilometers you want to convert to miles . . .[/#C44B6A]")
+    while True:
+        km_amount = input(f"{Fore.RED}> {Style.RESET_ALL}").strip()
+        if km_amount == "exit":
+            unit_converter()
+            return
+        else:
+            try:
+                km_amount_float = float(km_amount) * 0.621371
+                console.print(f"[#71F59D]{km_amount}[/#71F59D][#C44B6A] kilometer(s) is [/#C44B6A][#7AE6F0]{km_amount_float:.3f} [/#7AE6F0][#C44B6A]mile(s)[/#C44B6A]")
+                console.print(f"[#C44B6A]Continue . . .[/#C44B6A]")
+            except ValueError:
+                print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
+                continue
+
+# 0.0.2 --- UNIT CONVERTER
+def unit_converter():
+    new_screen()
+    reminder()
+    unit_converter_title = pyfiglet.figlet_format("Unit Converter")
+    console.print(f"[#C44B6A]{unit_converter_title}[/#C44B6A]")
+    console.print(row1)
+    console.print(row2)
+    console.print(f"[#C44B6A]Type the index of a method to access it . . .")
+    while True:
+        uc_input = input(f"{Fore.RED}> {Style.RESET_ALL}")
+        if uc_input == "exit":
+            desktop_menu()
+            return
+        elif uc_input == "1":
+            km()
+            return
+        elif uc_input == "2":
+            mk()
+            return
+        elif uc_input == "3":
+            mfeet()
+            return
+        elif uc_input == "4":
+            feetm()
+            return
+        elif uc_input == "5":
+            kgp()
+            return
+        elif uc_input == "6":
+            pkg()
+            return
+        else:
+            print(f"{Fore.RED}That's not a command!{Style.RESET_ALL}")
+    
+
+
+# 0.0.2 --- LOGO
+logo = """[#A378C2]
+  __  __ _      _  
+ |  \/  (_)_ _ (_)
+ | |\/| | | ' \| |
+ |_|  |_|_|_||_|_|
+  ___    _      _    
+ | __|__| |_ __| |_  
+ | _/ -_)  _/ _| ' \ 
+ |_|\___|\__\__|_||_|
+
+[/#A378C2]"""
+
+# 0.0.2 --- USER SPECS FOR MINIFETCH
+
+def get_cpu_name():
+    try:
+        output = subprocess.check_output(["wmic", "cpu", "get", "Name"], universal_newlines=True)
+        lines = [line.strip() for line in output.split("\n") if line.strip()]
+        return lines[1] if len(lines) > 1 else platform.processor()
+    except Exception:
+        return platform.processor()
+    
+def get_gpu_name():
+    try:
+        output = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], universal_newlines=True)
+        lines = [line.strip() for line in output.split("\n") if line.strip()]
+        return lines[1] if len(lines) > 1 else "Unknown GPU"
+    except Exception:
+        return "Unknown GPU"
+
+
+user_os = platform.system()
+user_os_version = platform.release()
+user_kernel_version = platform.version()
+user_cpu_test = os.popen("wmic cpu get name").read().strip().split("\n")
+user_cpu = get_cpu_name()    
+user_ram = round(psutil.virtual_memory().total / (1024 ** 3))
+user_gpu = get_gpu_name()
+user_disk_test = psutil.disk_usage('C:\\')
+user_disk = round(user_disk_test.total / (1024 ** 3))
+user_monitor = get_monitors()[0]
+width = user_monitor.width
+height = user_monitor.height
+
+
+
+user_minifetch_specs = f"""
+    [#52FFBA]OS:[/#52FFBA] {user_os_version}
+    [#52FFBA]OS version:[/#52FFBA] {user_os_version}
+    [#52FFBA]Kernel version:[/#52FFBA] {user_kernel_version}
+    [#52FFBA]CPU:[/#52FFBA] {user_cpu}
+    [#52FFBA]RAM (gb):[/#52FFBA] {user_ram}
+    [#52FFBA]GPU:[/#52FFBA] {user_gpu}
+    [#52FFBA]Disk (gb):[/#52FFBA] {user_disk}
+    [#52FFBA]Display width:[/#52FFBA] {width}
+    [#52FFBA]Display height:[/#52FFBA] {height}
+"""
+
+logo_frame = Panel.fit(logo, border_style="#A378C2")
+specs_frame = Panel.fit(user_minifetch_specs, border_style="#52FFBA")
+
+
+
+# 0.0.2 --- NOTE REMINDER FUNCTION
+def reminder():
+    if not user_notes:
+        return
+    reminder_choice = random.choice(list(user_notes.keys()))
+    reminder_data = user_notes[reminder_choice]['reminder_notifications']
+    if reminder_data == "on":
+        chance = [1, 2, 3]
+        selected_number = random.choice(chance)
+        if selected_number == 2:
+            print(f"{Fore.LIGHTMAGENTA_EX}To-do List: Reminder for the note {Fore.GREEN}{reminder_choice}{Fore.LIGHTMAGENTA_EX} !!!{Style.RESET_ALL}")
 
 
 # USER FILES
@@ -22,6 +285,7 @@ user_files = {}
 
 # USER NOTES
 user_notes = {}
+        
 
 # COMMAND FUNCTION
 def command_function():
@@ -31,11 +295,19 @@ def command_function():
             desktop_menu()
             return
         elif command == "help":
-            print("""Minicustom available commands (miniOS version 0.0.1)
+            print("""MiniCustom available commands (miniOS version 0.0.2)
         help --- displays this screen
         clear --- clears all commands on the screen
-        info --- displays info about miniOS
+        infocredits --- displays information and credits for miniOS
         files --- displays all your current files
+        time --- displays the current time
+        fulltime --- displays the current date and time
+        msay --- repeats what the user types afterwards
+        weatherc location --- displays the current weather in that location in Celsius
+        weatherf location --- displays the current weather in that location in Fahrenheit
+        wiki --- searches your input on wikipedia and returns the contents
+        wikitopic --- gives you a list of Wikipedia topics that might be useful for your search. If this returns an empty list, then your topic doesn't exist
+        minifetch --- displays system information
         exit --- exits to the desktop menu
         shutdown --- shutdown miniOS
         """)
@@ -45,11 +317,15 @@ def command_function():
             print(mini_custom_title)
             command_function()
             return
-        elif command == "info":
-            print("""miniOS current version: 0.0.1
+        elif command == "infocredits":
+            print("""miniOS current version: 0.0.2
         Early Supporters:
             stierprogrammer --- discord
             gudetimo --- discord
+            bkgrnd --- discord
+                  
+        Minifetch ASCII art:
+            bkgrnd
 
         Creator of miniOS:
             penguinguy25 --- replit and discord
@@ -60,13 +336,100 @@ def command_function():
         elif command == "shutdown":
             shutdown()
             return
+        elif command.startswith("msay "):
+            full_command = command[5:]
+            print(full_command)
+        elif command == "time":
+            test_time = datetime.datetime.now()
+            test_time = test_time.strftime("%H:%M:%S")
+            print(test_time)
+        elif command == "fulltime":
+            test_fulltime = datetime.datetime.now()
+            test_fulltime = test_fulltime.strftime("%H:%M:%S %d/%m/%Y")
+            print(test_fulltime)
+        elif command == "minifetch":          
+            console.print(Columns([logo_frame, specs_frame]))
+        elif command.startswith("weatherc "):
+            location = command[9:].strip()
+            if not location:
+                print("Enter a location to display the weather!")
+                continue
+            print("Loading weather . . .")
+            weather_url = "http://api.weatherapi.com/v1/current.json"
+            weather_params = {
+                "key": USER_WEATHER_API_KEY,
+                "q": location
+            }
+
+            try:
+                response = requests.get(weather_url, params=weather_params)
+                data = response.json()
+
+                if "error" in data:
+                    print(f"Error: {data['error']['message']}")
+                else:
+                    current_weather = data["current"]
+                    weather_condition = current_weather["condition"]["text"]
+                    temp_c = current_weather["temp_c"]
+                    print(f"Current weather in {location.title()}: {weather_condition}, {temp_c}°C")
+            except Exception as e:
+                print(f"Error while fetching the weather: {e}")
+                continue
+
+
+
+        elif command.startswith("weatherf "):
+            location = command[9:].strip()
+            if not location:
+                print("Enter a location to display the weather!")
+                continue
+            print("Loading weather . . .")
+            weather_url = "http://api.weatherapi.com/v1/current.json"
+            weather_params = {
+                "key": USER_WEATHER_API_KEY,
+                "q": location
+            }
+
+            try:
+                response = requests.get(weather_url, params=weather_params)
+                data = response.json()
+
+                if "error" in data:
+                    print(f"Error: {data['error']['message']}")
+                else:
+                    current_weather = data["current"]
+                    weather_condition = current_weather["condition"]["text"]
+                    temp_f = current_weather["temp_f"]
+                    print(f"Current weather in {location.title()}: {weather_condition}, {temp_f}°F")
+            except Exception as e:
+                print(f"Error while fetching weather: {e}")
+                continue
+        elif command.startswith("wiki "):
+            command = command[5:]
+            try:
+                print(f"{Fore.LIGHTGREEN_EX}Loading article . . .{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
+                print(wikipedia.summary(command, auto_suggest=False))
+                print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
+            except wikipedia.exceptions.PageError:
+                print("That's not a valid article, use 'wikitopic' to see available articles!")
+
+        elif command.startswith("wikitopic "):
+            command = command[10:]
+            print(f"{Fore.LIGHTGREEN_EX}Loading available topics . . .{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
+            print(wikipedia.search(command))
+            print(f"{Fore.LIGHTCYAN_EX}----------------------------------------------------------------------------------------------||{Style.RESET_ALL}")
         else:
             print("Command invalid. Type help for a list of commands.")
 
 # MINICUSTOM
 def mini_custom():
     new_screen()
-    mini_custom_title = pyfiglet.figlet_format("Minicustom")
+    reminder()
+    mini_custom_title = pyfiglet.figlet_format("MiniCustom")
     print(mini_custom_title)
     command_function()
         
@@ -100,6 +463,7 @@ def open_link(url):
 
 # VIDEO PLAYER
 def video_player():
+    reminder()
     new_screen()
     video_player_title = pyfiglet.figlet_format("Video Player")
     print(f"{Fore.LIGHTGREEN_EX}{video_player_title}{Style.RESET_ALL}")
@@ -140,6 +504,7 @@ def math_function(num, difficulty):
 
 # MATH TRAINING
 def math_training():
+    reminder()
     math_title = pyfiglet.figlet_format("Math Training")
     print(f"{Fore.LIGHTCYAN_EX}{math_title}{Style.RESET_ALL}")
     math_table = PrettyTable()
@@ -211,6 +576,7 @@ def guess_function(number):
 penguinguy25 = "Username of the creator of miniOS on Discord and Replit"
 # GUESS THE NUMBER
 def guess_the_number():
+    reminder()
     guess_the_number_title = pyfiglet.figlet_format("Guess ").splitlines()
     guess_the_number_title_2 = pyfiglet.figlet_format("the ").splitlines()
     guess_the_number_title_3 = pyfiglet.figlet_format("Number").splitlines()
@@ -388,6 +754,7 @@ computer_choices = ["rock", "paper", "scissors"]
 
 # ROCK PAPER SCISSORS
 def rock_paper_scissors():
+    reminder()
     rock_paper_scissors_title_1 = pyfiglet.figlet_format("Rock").splitlines()
     comma_title = pyfiglet.figlet_format(", ").splitlines()
     rock_paper_scissors_title_2 = pyfiglet.figlet_format("Paper").splitlines()
@@ -401,6 +768,7 @@ def rock_paper_scissors():
 # MINIGAMES
 def minigames():
     new_screen()
+    reminder()
     minigames_title = pyfiglet.figlet_format("Minigames")
     print(f"{Fore.MAGENTA}{minigames_title}{Style.RESET_ALL}")
     minigame_list = PrettyTable()
@@ -648,6 +1016,7 @@ user_operation = []
 def calculator():
     user_operation.clear()
     new_screen()
+    reminder()
     calculator_title_1 = pyfiglet.figlet_format("Calcu").splitlines()
     calculator_title_2 = pyfiglet.figlet_format("lator").splitlines()
 
@@ -734,11 +1103,26 @@ def to_do_list_reminder_function():
                 current_time = datetime.datetime.now()
                 note_creation_time_1 = current_time.strftime("%H:%M")
                 note_creation_time_2 = current_time.strftime("%d:%m:%Y")
+
+                # 0.0.2 REMINDER FREQUENCY UPDATE
+                print(f"{Fore.LIGHTMAGENTA_EX}Allow for reminders to randomly pop up for this task? y/n (disable it by accessing the task){Style.RESET_ALL}")
+                while True:
+                    reminder_choice = input(f"{Fore.RED}> {Style.RESET_ALL}")
+                    if reminder_choice == "y":
+                        reminder_notifications = "on"
+                        break
+                    elif reminder_choice == "n":
+                        reminder_notifications = "off"
+                        break
+                    else:
+                        print(f"{Fore.RED}That's not an available option! Please type either y or n.")
+
                 full_note_creation_time = note_creation_time_1 + " " + note_creation_time_2
                 user_notes[reminder_name] = {
                     'full_content': user_note,
                     'short_content': short_user_note,
-                    'creation_time': full_note_creation_time
+                    'creation_time': full_note_creation_time,
+                    'reminder_notifications': reminder_notifications
                 }
                 print(f"{Fore.LIGHTMAGENTA_EX}File {Fore.GREEN}saved {Fore.LIGHTMAGENTA_EX}successfully!{Style.RESET_ALL}")
                 print(f"{Fore.LIGHTMAGENTA_EX}Write another reminder? y/n{Style.RESET_ALL}")
@@ -756,13 +1140,12 @@ def to_do_list_reminder_function():
 
 def to_do_list():
     new_screen()
-
     to_do_title = pyfiglet.figlet_format("To-do List")
     print(f"{Fore.LIGHTMAGENTA_EX}{to_do_title}{Style.RESET_ALL}")
     to_do_notes_list = PrettyTable()
-    to_do_notes_list.field_names = [f"{Fore.LIGHTMAGENTA_EX}Note name{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}Note contents{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}Time of creation{Style.RESET_ALL}"]
+    to_do_notes_list.field_names = [f"{Fore.LIGHTMAGENTA_EX}Note name{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}Note contents{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}Time of creation{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}Notifications{Style.RESET_ALL}"]
     for user_note, user_note_data in user_notes.items():
-        to_do_notes_list.add_row([f"{Fore.LIGHTMAGENTA_EX}{user_note}{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}{user_note_data['short_content']}{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}{user_note_data['creation_time']}{Style.RESET_ALL}"])
+        to_do_notes_list.add_row([f"{Fore.LIGHTMAGENTA_EX}{user_note}{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}{user_note_data['short_content']}{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}{user_note_data['creation_time']}{Style.RESET_ALL}", f"{Fore.LIGHTMAGENTA_EX}{user_note_data['reminder_notifications']}{Style.RESET_ALL}"])
     print(to_do_notes_list)
     print(f"""{Fore.LIGHTMAGENTA_EX}Current commands:
     new --- create a new task
@@ -782,12 +1165,33 @@ def to_do_list():
             print(f"{Fore.LIGHTMAGENTA_EX}Note name: {Fore.CYAN}{to_do_choice}{Style.RESET_ALL}")
             print(f"{Fore.LIGHTMAGENTA_EX}\nNote contents: {Fore.GREEN}{note_data['full_content']}{Style.RESET_ALL}")
             print(f"{Fore.LIGHTMAGENTA_EX}\nTime of creation: {Fore.CYAN}{note_data['creation_time']}{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTMAGENTA_EX}\nNotifications: {Fore.YELLOW}{note_data['reminder_notifications']}{Style.RESET_ALL}")
             while True:
-                exit_input = input(f"{Fore.RED}> {Style.RESET_ALL}")
-                if exit_input == "exit":
-                    to_do_list()
+                if note_data['reminder_notifications'] == "on":
+                    print(f"{Fore.LIGHTMAGENTA_EX}\nTurn off notifications for this task? (type 'y' if yes, type exit to exit){Style.RESET_ALL}")
+                    exit_input = input(f"{Fore.RED}> {Style.RESET_ALL}")
+                    if exit_input == "exit":
+                        to_do_list()
+                        return
+                    elif exit_input == "y":
+                        note_data['reminder_notifications'] = "off"
+                        print(f"{Fore.GREEN}Notifications {Fore.RED}disabled{Style.RESET_ALL}.")
+                    else:
+                        print(f"{Fore.RED}That's not a command! Type exit to exit.{Style.RESET_ALL}")
                 else:
-                    print(f"{Fore.RED}That's not a command! Type exit to exit.{Style.RESET_ALL}")
+                    print(f"{Fore.LIGHTMAGENTA_EX}\nTurn on notifications for this task? (type 'y' if yes, type exit to exit){Style.RESET_ALL}")
+                    exit_input = input(f"{Fore.RED}> {Style.RESET_ALL}")
+                    if exit_input == "exit":
+                        to_do_list()
+                        return
+                    elif exit_input == "y":
+                        note_data['reminder_notifications'] = "on"
+                        print(f"{Fore.GREEN}Notifications enabled.{Style.RESET_ALL}")
+                    else:
+                        print(f"{Fore.RED}That's not a command! Type exit to exit.{Style.RESET_ALL}")
+        else:
+            print(f"{Fore.RED}That's not a reminder/command!{Style.RESET_ALL}")
+            continue
 
 
 def text_editor_input():
@@ -920,6 +1324,7 @@ def delete_file_manager_function():
 # FILE MANAGER
 def file_manager():
     new_screen()
+    reminder()
     file_manager_title = pyfiglet.figlet_format("File Manager")
     print(f"{Fore.YELLOW}{file_manager_title}{Style.RESET_ALL}")
     user_files_list = PrettyTable()
@@ -963,6 +1368,7 @@ def file_manager():
 # TEXT EDITOR
 def text_editor():
     new_screen()
+    reminder()
     text_editor_title = pyfiglet.figlet_format("Text Editor")
     print(f"{Fore.CYAN}{text_editor_title}{Style.RESET_ALL}")
     print(f"{Fore.CYAN}Type any text down below and it will be saved in your files. Note that once you press enter, the file will be saved (access it in File Manager), Type exit\\ to exit Text Editor.")
@@ -972,7 +1378,8 @@ def text_editor():
 # DESKTOP MENU
 def desktop_menu():
     new_screen()
-    main_title = pyfiglet.figlet_format("miniOS 0.0.1")
+    reminder()
+    main_title = pyfiglet.figlet_format("miniOS 0.0.2")
     print(f"{Fore.MAGENTA}{main_title}{Style.RESET_ALL}")
     program_list = PrettyTable()
     program_list.field_names = [f"{Fore.GREEN}App{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}Command{Style.RESET_ALL}"]
@@ -982,6 +1389,7 @@ def desktop_menu():
     program_list.add_row([f"{Fore.GREEN}Calculator{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}c{Style.RESET_ALL}"])
     program_list.add_row([f"{Fore.GREEN}Minigames{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}mg{Style.RESET_ALL}"])
     program_list.add_row([f"{Fore.GREEN}Video Player{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}vp{Style.RESET_ALL}"])
+    program_list.add_row([f"{Fore.GREEN}Unit Converter{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}uc{Style.RESET_ALL}"])
     program_list.add_row([f"{Fore.GREEN}MiniCustom{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}m{Style.RESET_ALL}"])
     print(program_list)
     print(f"{Fore.LIGHTBLACK_EX}(type exit in any program input screen to exit, type shutdown to close miniOS){Style.RESET_ALL}")
@@ -1005,6 +1413,9 @@ def desktop_menu():
         elif desktop_menu_choice == "vp":
             video_player()
             return
+        elif desktop_menu_choice == "uc":
+            unit_converter()
+            return
         elif desktop_menu_choice == "m":
             mini_custom()
             return
@@ -1018,7 +1429,7 @@ def desktop_menu():
 # BOOT SCREEN
 def boot_screen():
     new_screen()
-    print("miniOS version 0.0.1 --- penguinguy25")
+    print("miniOS version 0.0.2 --- penguinguy25")
     print("Boot command required . . .")
     while True:
         boot_screen_choice = input(f"{Fore.RED}> {Style.RESET_ALL}")
