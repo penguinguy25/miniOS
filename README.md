@@ -6,6 +6,7 @@ IMPORTANT: The boot command is "on"!
 
 Version 0.0.2 is out, here's what's new:
 -Added to-do list reminders (you can turn on reminders for a certain note, making it so that you get reminders for that note occasionally while using miniOS)
+-Addded a unit converter
 -Changed the date format to H:M:S d/m/Y
 -Added time and fulltime functions to MiniCustom
 -Added the "msay" function to MiniCustom (works like echo)
