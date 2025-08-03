@@ -355,7 +355,7 @@ def command_function():
                 print("Enter a location to display the weather!")
                 continue
             print("Loading weather . . .")
-            weather_url = "http://api.weatherapi.com/v1/current.json"
+            weather_url = "https://api.weatherapi.com/v1/current.json"
             weather_params = {
                 "key": USER_WEATHER_API_KEY,
                 "q": location
@@ -384,7 +384,7 @@ def command_function():
                 print("Enter a location to display the weather!")
                 continue
             print("Loading weather . . .")
-            weather_url = "http://api.weatherapi.com/v1/current.json"
+            weather_url = "https://api.weatherapi.com/v1/current.json"
             weather_params = {
                 "key": USER_WEATHER_API_KEY,
                 "q": location
