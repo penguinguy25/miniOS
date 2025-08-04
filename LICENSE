@@ -1,21 +1,34 @@
-MIT License
+# Truly Libre License (TLL)
+Version 1.0
 
-Copyright (c) 2025 penguinguy25
+## 1. Permission
+You are free to:
+- Use this work for any purpose.
+- Modify this work as you see fit.
+- Distribute copies or modified versions of this work.
+- Commercialize this work, whether modified or not.
+- Sublicense the work, granting others similar freedoms.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+There are no restrictions on:
+- The field of use.
+- The method of use.
+- The purpose (personal, academic, commercial, etc.).
+- Attribution is optional (though appreciated).
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 2. Disclaimer
+This work is provided "as is," without any warranties or guarantees of any kind. By using this work, you accept that the author is not liable for any claims, damages, or other liabilities that arise from its use, including but not limited to:
+- Errors or bugs.
+- Legal disputes related to your use or distribution of the work.
+- Any impact this work may have on your projects, systems, or products.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## 3. Optional Attribution
+While attribution is not required, if you choose to credit the original author, it would be appreciated. Suggested form:
+- "This work is based on [Author's Name]'s original [work/product]."
+
+## 4. Revocation of License
+There is no revocation of this license. Once granted, it cannot be taken away or altered retroactively.
+
+## 5. Additional Permissions
+You may add additional terms on your own copies or derivatives, provided that:
+- The additional terms do not restrict the permissions granted by this license.
+- The original work retains this license.
