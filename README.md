@@ -4,17 +4,17 @@ To use miniOS, make sure you already have Python installed on your computer, nav
 
 IMPORTANT: The boot command is "on"!
 
-Version 0.0.2 is out, here's what's new:
--Added to-do list reminders (you can turn on reminders for a certain note, making it so that you get reminders for that note occasionally while using miniOS)
--Addded a unit converter
--Changed the date format to H:M:S d/m/Y
--Added time and fulltime functions to MiniCustom
--Added the "msay" function to MiniCustom (works like echo)
--Added weatherc and weatherf functions to MiniCustom (gives the weather in the given location in either Celsius or Fahrenheit degrees)
--Added wiki and wikitopic functions to MiniCustom (wiki searches up the given information on Wikipedia, while wikitopic gives you a list of available/similar topics)
--Added minifetch function (works like neofetch on bash, will get an update as it doesn't have good support for Linux distros)
+Version 0.0.2 is out, here's what's new:<br>
+-Added to-do list reminders (you can turn on reminders for a certain note, making it so that you get reminders for that note occasionally while using miniOS)<br>
+-Addded a unit converter<br>
+-Changed the date format to H:M:S d/m/Y<br>
+-Added time and fulltime functions to MiniCustom<br>
+-Added the "msay" function to MiniCustom (works like echo)<br>
+-Added weatherc and weatherf functions to MiniCustom (gives the weather in the given location in either Celsius or Fahrenheit degrees)<br>
+-Added wiki and wikitopic functions to MiniCustom (wiki searches up the given information on Wikipedia, while wikitopic gives you a list of available/similar topics)<br>
+-Added minifetch function (works like neofetch on bash, will get an update as it doesn't have good support for Linux distros)<br>
 
-This was a big MiniCustom update!
+This was a big MiniCustom update!<br>
 Enjoy miniOS!
 
 
