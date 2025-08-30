@@ -1,24 +1,13 @@
-import pyfiglet
-import random
+import pyfiglet, random, datetime, os, math, webbrowser, platform, psutil, subprocess, requests, sys, wikipedia
 from colorama import Fore, Style
 from prettytable import PrettyTable
-import datetime
-import os
 from functools import reduce
-import math
-import webbrowser
 from rich.console import Console
 from rich.panel import Panel
 from rich.columns import Columns
 from rich.align import Align
-import platform
-import psutil
 from screeninfo import get_monitors
-import subprocess
-import requests
 from dotenv import load_dotenv
-import sys
-import wikipedia
 
 console = Console()
 
@@ -28,7 +17,7 @@ USER_WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 
 # SHUTDOWN COMMAND
 def shutdown():
-    print(f"{Fore.MAGENTA}---miniOS 0.0.2 shut down---{Style.RESET_ALL}")
+    print(f"{Fore.MAGENTA}---miniOS 0.0.2.1 shut down---{Style.RESET_ALL}")
     sys.exit()
 
 # NEW SCREEN FUNCTION
@@ -166,7 +155,7 @@ def km():
                 print(f"{Fore.RED}That's not a number!{Style.RESET_ALL}")
                 continue
 
-# 0.0.2 --- UNIT CONVERTER
+# 0.0.2.1 --- UNIT CONVERTER
 def unit_converter():
     new_screen()
     reminder()
@@ -203,7 +192,7 @@ def unit_converter():
     
 
 
-# 0.0.2 --- LOGO
+# 0.0.2.1 --- LOGO
 logo = """[#A378C2]
   __  __ _      _  
  |  \/  (_)_ _ (_)
@@ -216,58 +205,105 @@ logo = """[#A378C2]
 
 [/#A378C2]"""
 
-# 0.0.2 --- USER SPECS FOR MINIFETCH
+# 0.0.2.1 --- USER SPECS FOR MINIFETCH
 
 def get_cpu_name():
     try:
-        output = subprocess.check_output(["wmic", "cpu", "get", "Name"], universal_newlines=True)
-        lines = [line.strip() for line in output.split("\n") if line.strip()]
-        return lines[1] if len(lines) > 1 else platform.processor()
+        if platform.system() == "Windows":
+            output = subprocess.check_output(["wmic", "cpu", "get", "Name"], universal_newlines=True)
+            lines = [line.strip() for line in output.split("\n") if line.strip()]
+            return lines[1] if len(lines) > 1 else platform.processor()
+        elif platform.system() == "Linux":
+            with open('/proc/cpuinfo', 'r') as f:
+                for line in f:
+                    if 'model name' in line:
+                        return line.split(':')[1].strip()
+        elif platform.system() == "Darwin":  # macOS
+            output = subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"], universal_newlines=True)
+            return output.strip()
     except Exception:
-        return platform.processor()
+        pass
+    return platform.processor() or "Unknown CPU"
     
 def get_gpu_name():
     try:
-        output = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], universal_newlines=True)
-        lines = [line.strip() for line in output.split("\n") if line.strip()]
-        return lines[1] if len(lines) > 1 else "Unknown GPU"
+        if platform.system() == "Windows":
+            output = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], universal_newlines=True)
+            lines = [line.strip() for line in output.split("\n") if line.strip()]
+            return lines[1] if len(lines) > 1 else "Unknown GPU"
+        elif platform.system() == "Linux":
+            # Try lspci first
+            try:
+                output = subprocess.check_output(["lspci"], universal_newlines=True)
+                for line in output.split('\n'):
+                    if 'VGA compatible controller' in line or 'Display controller' in line:
+                        return line.split(': ', 1)[1] if ': ' in line else line
+            except:
+                pass
+            # Try nvidia-smi as fallback
+            try:
+                output = subprocess.check_output(["nvidia-smi", "--query-gpu=name", "--format=csv,noheader,nounits"], universal_newlines=True)
+                return output.strip()
+            except:
+                pass
+        elif platform.system() == "Darwin":  # macOS
+            try:
+                output = subprocess.check_output(["system_profiler", "SPDisplaysDataType"], universal_newlines=True)
+                for line in output.split('\n'):
+                    if 'Chipset Model:' in line:
+                        return line.split(':')[1].strip()
+            except:
+                pass
     except Exception:
-        return "Unknown GPU"
-
+        pass
+    return "Unknown GPU"
 
 user_os = platform.system()
-user_os_version = platform.release()
-user_kernel_version = platform.version()
-user_cpu_test = os.popen("wmic cpu get name").read().strip().split("\n")
+user_os_version = platform.version()
+user_kernel_version = platform.release()
 user_cpu = get_cpu_name()    
 user_ram = round(psutil.virtual_memory().total / (1024 ** 3))
 user_gpu = get_gpu_name()
-user_disk_test = psutil.disk_usage('C:\\')
-user_disk = round(user_disk_test.total / (1024 ** 3))
-user_monitor = get_monitors()[0]
-width = user_monitor.width
-height = user_monitor.height
 
-
+# display info fallback if screeninfo fails
+try:
+    user_monitor = get_monitors()[0]
+    width = user_monitor.width
+    height = user_monitor.height
+except Exception:
+    width, height = "Unknown", "Unknown"
 
 user_minifetch_specs = f"""
-    [#52FFBA]OS:[/#52FFBA] {user_os_version}
-    [#52FFBA]OS version:[/#52FFBA] {user_os_version}
-    [#52FFBA]Kernel version:[/#52FFBA] {user_kernel_version}
-    [#52FFBA]CPU:[/#52FFBA] {user_cpu}
-    [#52FFBA]RAM (gb):[/#52FFBA] {user_ram}
-    [#52FFBA]GPU:[/#52FFBA] {user_gpu}
-    [#52FFBA]Disk (gb):[/#52FFBA] {user_disk}
-    [#52FFBA]Display width:[/#52FFBA] {width}
-    [#52FFBA]Display height:[/#52FFBA] {height}
+[#52FFBA]host OS:[/#52FFBA] {user_os}
+[#52FFBA]host CPU:[/#52FFBA] {user_cpu}
+[#52FFBA]host RAM (GB):[/#52FFBA] {user_ram}
+[#52FFBA]host GPU:[/#52FFBA] {user_gpu}
+[#52FFBA]host Display width:[/#52FFBA] {width}
+[#52FFBA]host Display height:[/#52FFBA] {height}
 """
 
-logo_frame = Panel.fit(logo, border_style="#A378C2")
-specs_frame = Panel.fit(user_minifetch_specs, border_style="#52FFBA")
+# 0.0.2.1 --- LOGO
+logo = """[#A378C2]
+  __  __ _      _  
+ |  \/  (_)_ _ (_)
+ | |\/| | | ' \| |
+ |_|  |_|_|_||_|_|
+  ___    _      _    
+ | __|__| |_ __| |_  
+ | _/ -_)  _/ _| ' \ 
+ |_|\___|\__\__|_||_|
+
+[/#A378C2]"""
+
+
+def sysfetch():
+    logo_frame = Panel.fit(logo, border_style="#A378C2")
+    specs_frame = Panel.fit(user_minifetch_specs, border_style="#52FFBA")
+    console.print(Columns([logo_frame, specs_frame]))
 
 
 
-# 0.0.2 --- NOTE REMINDER FUNCTION
+# 0.0.2.1 --- NOTE REMINDER FUNCTION
 def reminder():
     if not user_notes:
         return
@@ -295,7 +331,7 @@ def command_function():
             desktop_menu()
             return
         elif command == "help":
-            print("""MiniCustom available commands (miniOS version 0.0.2)
+            print("""MiniCustom available commands (miniOS version 0.0.2.1)
         help --- displays this screen
         clear --- clears all commands on the screen
         infocredits --- displays information and credits for miniOS
@@ -318,7 +354,7 @@ def command_function():
             command_function()
             return
         elif command == "infocredits":
-            print("""miniOS current version: 0.0.2
+            print("""miniOS current version: 0.0.2.1
         Early Supporters:
             stierprogrammer --- discord
             gudetimo --- discord
@@ -348,7 +384,7 @@ def command_function():
             test_fulltime = test_fulltime.strftime("%H:%M:%S %d/%m/%Y")
             print(test_fulltime)
         elif command == "minifetch":          
-            console.print(Columns([logo_frame, specs_frame]))
+            sysfetch()
         elif command.startswith("weatherc "):
             location = command[9:].strip()
             if not location:
@@ -1104,7 +1140,7 @@ def to_do_list_reminder_function():
                 note_creation_time_1 = current_time.strftime("%H:%M")
                 note_creation_time_2 = current_time.strftime("%d:%m:%Y")
 
-                # 0.0.2 REMINDER FREQUENCY UPDATE
+                # 0.0.2.1 REMINDER FREQUENCY UPDATE
                 print(f"{Fore.LIGHTMAGENTA_EX}Allow for reminders to randomly pop up for this task? y/n (disable it by accessing the task){Style.RESET_ALL}")
                 while True:
                     reminder_choice = input(f"{Fore.RED}> {Style.RESET_ALL}")
@@ -1379,7 +1415,7 @@ def text_editor():
 def desktop_menu():
     new_screen()
     reminder()
-    main_title = pyfiglet.figlet_format("miniOS 0.0.2")
+    main_title = pyfiglet.figlet_format("miniOS 0.0.2.1")
     print(f"{Fore.MAGENTA}{main_title}{Style.RESET_ALL}")
     program_list = PrettyTable()
     program_list.field_names = [f"{Fore.GREEN}App{Style.RESET_ALL}", f"{Fore.LIGHTBLUE_EX}Command{Style.RESET_ALL}"]
@@ -1429,7 +1465,7 @@ def desktop_menu():
 # BOOT SCREEN
 def boot_screen():
     new_screen()
-    print("miniOS version 0.0.2 --- penguinguy25")
+    print("miniOS version 0.0.2.1 --- penguinguy25")
     print("Boot command required . . .")
     while True:
         boot_screen_choice = input(f"{Fore.RED}> {Style.RESET_ALL}")
